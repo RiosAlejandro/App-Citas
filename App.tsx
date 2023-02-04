@@ -1,8 +1,12 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-trailing-spaces */
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, Pressable, Modal} from 'react-native';
+import {SafeAreaView, Text, StyleSheet, Pressable} from 'react-native';
+import Formulario from './src/components/Formulario';
 
 function App(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
+  const [pacientes, setPacientes] = useState([]);
 
   return (
     <SafeAreaView style={styles.contenedor}>
@@ -11,13 +15,20 @@ function App(): JSX.Element {
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
       <Pressable
-        onPressOut={() => setModalVisible(true)}
+        onPressOut={() => setModalVisible(!modalVisible)}
         style={styles.btnNuevaCita}>
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
-      <Modal animationType="slide" visible={modalVisible}>
-        <Text>Desde modal</Text>
-      </Modal>
+      {pacientes.length === 0 ? 
+        <Text style={styles.noPacientes}>No hay pacientes aún</Text> : 
+        <Text>a</Text>
+      }
+      <Formulario
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        pacientes={pacientes}
+        setPacientes={setPacientes}
+      />
     </SafeAreaView>
   );
 }
@@ -50,6 +61,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '900',
     textTransform: 'uppercase',
+  },
+  noPacientes: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '600',
   },
 });
 
