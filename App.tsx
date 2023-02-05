@@ -1,12 +1,35 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-trailing-spaces */
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, Pressable} from 'react-native';
+import {SafeAreaView, Text, StyleSheet, Pressable, FlatList, Alert} from 'react-native';
 import Formulario from './src/components/Formulario';
+import Paciente from './src/components/Paciente';
 
 function App(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [pacientes, setPacientes] = useState([]);
+  const [paciente, setPaciente] = useState({});
+
+  const pacienteEditar = (id: any) => {
+    const pacienteEditado = pacientes.filter(pacienteFilter => pacienteFilter.id === id);
+    setPaciente(pacienteEditado[0]);
+  };
+
+  const pacienteEliminar = id => {
+    Alert.alert(
+      '¿Deseas eliminar este paciente?',
+      'Un paciente eliminado no se puede recuperar',
+      [
+        {text: 'Cancelar'},
+        {text: 'Sí, Eliminar', onPress: () => {
+          const pacientesActualizados = pacientes.filter(
+            pacientesState => pacientesState.id !== id
+          );
+          setPacientes(pacientesActualizados);
+        }},
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={styles.contenedor}>
@@ -21,13 +44,27 @@ function App(): JSX.Element {
       </Pressable>
       {pacientes.length === 0 ? 
         <Text style={styles.noPacientes}>No hay pacientes aún</Text> : 
-        <Text>a</Text>
+        <FlatList 
+        style={styles.listado}
+          data={pacientes}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => {
+            return (<Paciente 
+                      item={item} 
+                      setModalVisible={setModalVisible}
+                      pacienteEditar={pacienteEditar}
+                      pacienteEliminar={pacienteEliminar}
+                    />);
+          }}
+        />
       }
       <Formulario
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         pacientes={pacientes}
         setPacientes={setPacientes}
+        paciente={paciente}
+        setPaciente={setPaciente}
       />
     </SafeAreaView>
   );
@@ -67,6 +104,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '600',
+  },
+  listado: {
+    marginTop: 50,
+    marginHorizontal: 30,
   },
 });
 

@@ -1,15 +1,42 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
-import {Modal, Text, SafeAreaView, StyleSheet, TextInput, View, ScrollView, Pressable, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Modal,
+        Text,
+        SafeAreaView,
+        StyleSheet,
+        TextInput,
+        View,
+        ScrollView,
+        Pressable,
+        Alert} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible, setModalVisible, pacientes, setPacientes}) => {
+const Formulario = ({
+  modalVisible,
+  setModalVisible,
+  pacientes,
+  setPacientes,
+  paciente: pacienteObj,
+  setPaciente: setPacienteApp}) => {
   const [paciente, setPaciente] = useState('');
+  const [id, setId] = useState('');
   const [propietario, setPropietario] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [fecha, setFecha] = useState(new Date());
   const [sintomas, setSintomas] = useState('');
+
+  useEffect(() => {
+    if (Object.keys(pacienteObj).length > 0) {
+      setPaciente(pacienteObj.paciente);
+      setId(pacienteObj.id);
+      setPropietario(pacienteObj.propietario);
+      setEmail(pacienteObj.email);
+      setTelefono(pacienteObj.telefono);
+      setFecha(pacienteObj.fecha);
+      setSintomas(pacienteObj.setSintomas);
+    }
+  }, [pacienteObj]);
 
   const handleCita = () => {
     if ([paciente, propietario, email, fecha, sintomas].includes('')){
@@ -21,7 +48,6 @@ const Formulario = ({modalVisible, setModalVisible, pacientes, setPacientes}) =>
       return;
     }
     const nuevoPaciente = {
-      id: Date.now(),
       paciente,
       propietario,
       email,
@@ -29,9 +55,23 @@ const Formulario = ({modalVisible, setModalVisible, pacientes, setPacientes}) =>
       fecha,
       sintomas,
     };
-    setPacientes([...pacientes, nuevoPaciente]);
-    setModalVisible(!modalVisible);
+    if (id) {
+      nuevoPaciente.id = id;
 
+      const pacientesActualizados = pacientes.map(pacienteState =>
+          pacienteState.id === nuevoPaciente.id ?
+          nuevoPaciente :
+          pacienteState
+        );
+
+        setPacientes(pacientesActualizados);
+        setPacienteApp({});
+    } else {
+      nuevoPaciente.id = Date.now();
+      setPacientes([...pacientes, nuevoPaciente]);
+    }
+    setModalVisible(!modalVisible);
+    setId('');
     setPaciente('');
     setPropietario('');
     setEmail('');
@@ -45,12 +85,22 @@ const Formulario = ({modalVisible, setModalVisible, pacientes, setPacientes}) =>
       <SafeAreaView style={styles.contenido}>
         <ScrollView>
           <Text style={styles.titulo}>
-            Nueva {''}
+            {pacienteObj.id ? 'Editar' : 'Nueva'} {''}
             <Text style={styles.tituloBold}>Cita</Text>
           </Text>
           <Pressable
             style={styles.btnCancelar}
-            onLongPress={() => setModalVisible(!modalVisible)}
+            onLongPress={() => {
+              setModalVisible(!modalVisible);
+              setPacienteApp({});
+              setId('');
+              setPaciente('');
+              setPropietario('');
+              setEmail('');
+              setTelefono('');
+              setFecha(new Date());
+              setSintomas('');
+            }}
           >
             <Text style={styles.btnCancelarTexto}>X Cancelar</Text>
           </Pressable>
@@ -123,7 +173,10 @@ const Formulario = ({modalVisible, setModalVisible, pacientes, setPacientes}) =>
             style={styles.btnNuevaCita}
             onPress={handleCita}
           >
-            <Text style={styles.btnNuevaCitaTexto}>Agregar Paciente</Text>
+            <Text style={styles.btnNuevaCitaTexto}>
+              {pacienteObj.id ? 'Editar' : 'Agregar'
+              } Paciente
+            </Text>
           </Pressable>
         </ScrollView>
       </SafeAreaView>
