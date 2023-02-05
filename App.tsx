@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-trailing-spaces */
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, Pressable, FlatList, Alert} from 'react-native';
+import {SafeAreaView, Text, StyleSheet, Pressable, FlatList, Alert, Modal} from 'react-native';
 import Formulario from './src/components/Formulario';
 import Paciente from './src/components/Paciente';
+import InformacionPaciente from './src/components/InformacionPaciente;
 
 function App(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [pacientes, setPacientes] = useState([]);
   const [paciente, setPaciente] = useState({});
+  const [modalPaciente, setModalPaciente] = useState(false);
 
   const pacienteEditar = (id: any) => {
     const pacienteEditado = pacientes.filter(pacienteFilter => pacienteFilter.id === id);
@@ -51,9 +53,11 @@ function App(): JSX.Element {
           renderItem={({item}) => {
             return (<Paciente 
                       item={item} 
+                      setPaciente={setPaciente}
                       setModalVisible={setModalVisible}
                       pacienteEditar={pacienteEditar}
                       pacienteEliminar={pacienteEliminar}
+                      setModalPaciente={setModalPaciente}
                     />);
           }}
         />
@@ -66,6 +70,13 @@ function App(): JSX.Element {
         paciente={paciente}
         setPaciente={setPaciente}
       />
+      <Modal animationType="fade" visible={modalPaciente}>
+        <InformacionPaciente 
+          paciente={paciente}
+          setModalPaciente={setModalPaciente}
+          setPaciente={setPaciente}
+          />
+      </Modal>      
     </SafeAreaView>
   );
 }
