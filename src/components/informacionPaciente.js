@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, SafeAreaView, View, Pressable, StyleSheet} from 'react-native';
+import {
+  Text,
+  SafeAreaView,
+  View,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import {FormatearFecha} from '../helpers/index';
 
 const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
@@ -9,6 +15,7 @@ const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
       <Text style={styles.titulo}>Información {''}
         <Text style={styles.tituloBold}>Paciente</Text>
       </Text>
+
       <View>
         <Pressable
           onLongPress={() => {
@@ -20,27 +27,33 @@ const InformacionPaciente = ({paciente, setModalPaciente, setPaciente}) => {
           <Text style={styles.btnCancelarTexto}>X Cerrar</Text>
         </Pressable>
       </View>
+
       <View style={styles.contenido}>
         <View style={styles.campo}>
           <Text style={styles.label}>Nombre:</Text>
           <Text style={styles.valor}>{paciente.paciente}</Text>
         </View>
+
         <View style={styles.campo}>
           <Text style={styles.label}>Propietario:</Text>
           <Text style={styles.valor}>{paciente.propietario}</Text>
         </View>
+
         <View style={styles.campo}>
           <Text style={styles.label}>Email:</Text>
           <Text style={styles.valor}>{paciente.email}</Text>
         </View>
+
         <View style={styles.campo}>
           <Text style={styles.label}>Teléfono:</Text>
           <Text style={styles.valor}>{paciente.telefono}</Text>
         </View>
+
         <View style={styles.campo}>
           <Text style={styles.label}>Fecha Alta:</Text>
           <Text style={styles.valor}>{FormatearFecha(paciente.fecha)}</Text>
         </View>
+
         <View style={styles.campo}>
           <Text style={styles.label}>Síntomas:</Text>
           <Text style={styles.valor}>{paciente.sintomas}</Text>

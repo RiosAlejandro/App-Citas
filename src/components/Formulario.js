@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
-import {Modal,
-        Text,
-        SafeAreaView,
-        StyleSheet,
-        TextInput,
-        View,
-        ScrollView,
-        Pressable,
-        Alert} from 'react-native';
+import {
+  Modal,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  View,
+  ScrollView,
+  Pressable,
+  Alert,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 const Formulario = ({
@@ -17,7 +19,9 @@ const Formulario = ({
   pacientes,
   setPacientes,
   paciente: pacienteObj,
-  setPaciente: setPacienteApp}) => {
+  setPaciente: setPacienteApp,
+}) => {
+
   const [paciente, setPaciente] = useState('');
   const [id, setId] = useState('');
   const [propietario, setPropietario] = useState('');
@@ -90,7 +94,7 @@ const Formulario = ({
           </Text>
           <Pressable
             style={styles.btnCancelar}
-            onLongPress={() => {
+            onPress={() => {
               setModalVisible(!modalVisible);
               setPacienteApp({});
               setId('');
@@ -104,6 +108,7 @@ const Formulario = ({
           >
             <Text style={styles.btnCancelarTexto}>X Cancelar</Text>
           </Pressable>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Nombre Paciente</Text>
             <TextInput
@@ -114,6 +119,7 @@ const Formulario = ({
               onChangeText={setPaciente}
             />
           </View>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Nombre Propietario</Text>
             <TextInput
@@ -124,6 +130,7 @@ const Formulario = ({
               onChangeText={setPropietario}
             />
           </View>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Email Propietario</Text>
             <TextInput
@@ -135,6 +142,7 @@ const Formulario = ({
               onChangeText={setEmail}
             />
           </View>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Teléfono Propietario</Text>
             <TextInput
@@ -147,6 +155,7 @@ const Formulario = ({
               maxLength={10}
             />
           </View>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Fecha Alta</Text>
             <View style={styles.fechaContenedor}>
@@ -157,6 +166,7 @@ const Formulario = ({
               />
             </View>
           </View>
+
           <View style={styles.campo}>
             <Text style={styles.label}>Síntomas paciente</Text>
             <TextInput
@@ -169,6 +179,7 @@ const Formulario = ({
               numberOfLines={4}
             />
           </View>
+
           <Pressable
             style={styles.btnNuevaCita}
             onPress={handleCita}

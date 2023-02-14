@@ -1,18 +1,27 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-trailing-spaces */
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, Pressable, FlatList, Alert, Modal} from 'react-native';
+import {
+  SafeAreaView, 
+  Text, 
+  StyleSheet, 
+  Pressable, 
+  FlatList, 
+  Alert, 
+  Modal,
+} from 'react-native';
 import Formulario from './src/components/Formulario';
 import Paciente from './src/components/Paciente';
-import InformacionPaciente from './src/components/InformacionPaciente;
+import InformacionPaciente from './src/components/informacionPaciente';
 
-function App(): JSX.Element {
+const App = () => {
+
   const [modalVisible, setModalVisible] = useState(false);
   const [pacientes, setPacientes] = useState([]);
   const [paciente, setPaciente] = useState({});
   const [modalPaciente, setModalPaciente] = useState(false);
 
-  const pacienteEditar = (id: any) => {
+  const pacienteEditar = id => {
     const pacienteEditado = pacientes.filter(pacienteFilter => pacienteFilter.id === id);
     setPaciente(pacienteEditado[0]);
   };
@@ -39,27 +48,29 @@ function App(): JSX.Element {
         Administrador de Citas {''}
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
+
       <Pressable
         onPressOut={() => setModalVisible(!modalVisible)}
         style={styles.btnNuevaCita}>
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
+
       {pacientes.length === 0 ? 
         <Text style={styles.noPacientes}>No hay pacientes aún</Text> : 
         <FlatList 
         style={styles.listado}
-          data={pacientes}
-          keyExtractor={(item) => item.id}
-          renderItem={({item}) => {
-            return (<Paciente 
-                      item={item} 
-                      setPaciente={setPaciente}
-                      setModalVisible={setModalVisible}
-                      pacienteEditar={pacienteEditar}
-                      pacienteEliminar={pacienteEliminar}
-                      setModalPaciente={setModalPaciente}
-                    />);
-          }}
+        data={pacientes}
+        keyExtractor={(item) => item.id}
+        renderItem={({item}) => {
+          return (<Paciente 
+                    item={item} 
+                    setPaciente={setPaciente}
+                    setModalVisible={setModalVisible}
+                    pacienteEditar={pacienteEditar}
+                    pacienteEliminar={pacienteEliminar}
+                    setModalPaciente={setModalPaciente}
+                  />);
+        }}
         />
       }
       <Formulario
@@ -79,7 +90,7 @@ function App(): JSX.Element {
       </Modal>      
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   contenedor: {

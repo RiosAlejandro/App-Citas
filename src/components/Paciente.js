@@ -3,13 +3,15 @@ import React from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
 import {FormatearFecha} from '../helpers/index';
 
-const Paciente = ({item,
-                  setModalVisible,
-                  pacienteEditar,
-                  pacienteEliminar,
-                  setModalPaciente,
-                  setPaciente,
+const Paciente = ({
+  item,
+  setModalVisible,
+  pacienteEditar,
+  pacienteEliminar,
+  setModalPaciente,
+  setPaciente,
                 }) => {
+
   const {paciente, fecha, id} = item;
 
   return (
@@ -21,19 +23,21 @@ const Paciente = ({item,
         <Text style={styles.label}>Paciente:</Text>
         <Text style={styles.texto}>{paciente}</Text>
         <Text style={styles.fecha}>{FormatearFecha(fecha)}</Text>
+
         <View style={styles.contenedorBotones}>
           <Pressable
             style={[styles.btn, styles.btnEditar]}
-            onLongPress={() => {
+            onPress={() => {
               setModalVisible(true);
               pacienteEditar(id);
             }}
           >
             <Text style={styles.btnTexto}>Editar</Text>
           </Pressable>
+
           <Pressable
             style={[styles.btn, styles.btnEliminar]}
-            onLongPress={() => pacienteEliminar(id)}
+            onPress={() => pacienteEliminar(id)}
           >
             <Text style={styles.btnTexto}>Eliminar</Text>
           </Pressable>
